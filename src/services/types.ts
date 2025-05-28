@@ -48,8 +48,8 @@ interface VehiculoBase {
     anio: string;
 }
 
-interface DocumentoBase {
-    tipo_documento: string;
-    ruta_archivo: string;
-    id_caso: number;
-}
+// interface DocumentoBase {
+//     tipo_documento: string;
+//     ruta_archivo: string;
+//     id_caso: number;
+// }

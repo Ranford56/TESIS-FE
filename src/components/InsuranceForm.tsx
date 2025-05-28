@@ -254,7 +254,7 @@ export function InsuranceForm() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ values, setFieldValue, errors, touched }) => (
+        {({ values, setFieldValue }) => (
           <Form className="space-y-6">
             {/* Step indicator */}
             <div className="flex justify-between items-center mb-6">
