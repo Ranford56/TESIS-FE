@@ -1,7 +1,8 @@
 import axios from 'axios';
-import type { BlobResponse, Contratantes, CreateCaso, MarcaVehiculo } from './types';
+import type {BlobResponse, Caso, Contratantes, CreateCaso, MarcaVehiculo} from './types';
 
-const API_BASE_URL = 'https://pry-tesis-be.azurewebsites.net/';
+// const API_BASE_URL = 'https://pry-tesis-be.azurewebsites.net';
+const API_BASE_URL = 'http://localhost:8000';
 
 export const createInsuranceCase = async (formData: CreateCaso) => {
   try {
@@ -16,6 +17,16 @@ export const createInsuranceCase = async (formData: CreateCaso) => {
     throw error;
   }
 };
+
+export const getAllInsuranceCases = async ():Promise<Caso[]> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/casos/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching insurance case:', error);
+    throw error;
+  }
+}
 
 export const getInsuranceCase = async (caseId: number) => {
   try {
@@ -47,9 +58,9 @@ export const getVehicleBrands = async (): Promise<MarcaVehiculo[]> => {
   }
 }
 
-export const uploadBlob = async (): Promise<BlobResponse> => {
+export const uploadBlob = async (data: {blob_name: string ; file: File}): Promise<BlobResponse> => {
   try{
-    const response = await axios.get(`${API_BASE_URL}/blob/upload`)
+    const response = await axios.post(`${API_BASE_URL}/blob/upload?blob_name=${data.blob_name}`, data, { headers: { 'Content-Type': 'multipart/form-data' } });
     return response.data
   } catch (error) {
     console.error('Error fetching info: ', error)

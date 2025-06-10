@@ -52,3 +52,41 @@ export interface BlobResponse {
     blob_name: string;
     data: string
 }
+
+export interface Caso {
+    fecha_incidente:    Date;
+    detalles_incidente: string;
+    danos_visibles:     string;
+    ya_reportado:       boolean;
+    numero_poliza:      string;
+    aseguradora:        string;
+    id:                 number;
+    contratantes:       Asegurado[];
+    asegurados:         Asegurado[];
+    vehiculos:          Vehiculo[];
+    documentos:         Documento[];
+}
+
+export interface Asegurado {
+    tipo_identificacion:   string;
+    numero_identificacion: string;
+    nombre_asegurado?:     string;
+    residencia:            string;
+    id:                    number;
+    nombre_contratante?:   string;
+}
+
+export interface Documento {
+    tipo_documento: string;
+    ruta_archivo:   string;
+    id_caso:        number;
+    id:             number;
+}
+
+export interface Vehiculo {
+    placa:  string;
+    marca:  string;
+    modelo: string;
+    anio:   string;
+    id:     number;
+}

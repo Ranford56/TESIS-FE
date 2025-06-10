@@ -1,11 +1,12 @@
-import { InsuranceForm } from "./components/InsuranceForm";
+// import { InsuranceForm } from "./components/InsuranceForm";
+import InsurancePageWrapper from "@/components/DashboardWrapper.tsx";
+import {ThemeProvider} from "@/components/ThemeProvider.tsx";
 
 function App() {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Formulario de Seguro Vehicular</h1>
-      <InsuranceForm />
-    </div>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <InsurancePageWrapper/>
+      </ThemeProvider>
   );
 }
 
