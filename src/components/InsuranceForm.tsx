@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import {
   getInsuranceCompanies,
   getVehicleBrands,
-  createInsuranceCase,
+  createInsuranceCase, uploadBlob,
 } from "@/services/api";
 import {
   Select,
@@ -112,7 +112,7 @@ const validationSchema = Yup.object().shape({
   }),
 });
 
-export function InsuranceForm() {
+export function InsuranceForm({ onSubmissionSuccess } : { onSubmissionSuccess: () => void }) {
   const [step, setStep] = useState(1);
   const [insuranceCompanies, setInsuranceCompanies] = useState<Contratantes[]>([]);
   const [vehicleBrands, setVehicleBrands] = useState<MarcaVehiculo[]>([]);
@@ -129,6 +129,7 @@ export function InsuranceForm() {
         setInsuranceCompanies(companies);
         setVehicleBrands(brands);
       } catch (error) {
+        console.error("Error desconocido consiguiendo la informacion de los select: ", error);
         toast.error("No se pudieron cargar los datos iniciales");
       }
     };
@@ -165,7 +166,6 @@ export function InsuranceForm() {
   };
 
   const handleSubmit = async (values: typeof initialValues) => {
-    console.log("AAAAAAA")
     setIsSubmitting(true);
     try {
       const formData = new FormData();
@@ -189,15 +189,32 @@ export function InsuranceForm() {
         }
       });
 
+      const uploadFilesData = []
+
       // Append documents
       if (values.documents.idFile) {
-        formData.append("idFile", values.documents.idFile);
+        const file = values.documents.idFile;
+        const data = {
+          blob_name: "id_" + file.name,
+          file: file,
+        }
+        uploadFilesData.unshift(data);
       }
       if (values.documents.registrationFile) {
-        formData.append("registrationFile", values.documents.registrationFile);
+        const file = values.documents.registrationFile;
+        const data = {
+          blob_name: "reg_" + file.name,
+          file: file,
+        }
+        uploadFilesData.unshift(data);
       }
       if (values.documents.licenseFile) {
-        formData.append("licenseFile", values.documents.licenseFile);
+        const file = values.documents.licenseFile;
+        const data = {
+          blob_name: "lic_" + file.name,
+          file: file,
+        }
+        uploadFilesData.unshift(data);
       }
 
       const data:CreateCaso = {
@@ -233,11 +250,18 @@ export function InsuranceForm() {
         ]
       }
 
-      await createInsuranceCase(data);
+      const createInsuranceResponse = await createInsuranceCase(data);
+
+      uploadFilesData.map((fileData) => {
+        fileData.blob_name = createInsuranceResponse.id + "_" + fileData.blob_name;
+        uploadBlob((fileData))
+      })
 
       toast.success("El caso de seguro ha sido creado correctamente");
+      onSubmissionSuccess()
       setStep(5); // Show success step
     } catch (error) {
+      console.error(error);
       toast.error("Hubo un problema al crear el caso");
     } finally {
       setIsSubmitting(false);
@@ -504,7 +528,7 @@ export function InsuranceForm() {
                       Fecha del Siniestro
                     </label>
                     <Popover>
-                      <PopoverTrigger asChild>
+                      <PopoverTrigger>
                         <Button
                           variant={"outline"}
                           className={cn(
