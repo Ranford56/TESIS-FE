@@ -31,6 +31,7 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import {ModeToggle} from "@/components/ModeToggle.tsx";
+import imgUrl from '/atsLogo.png'
 
 function Sidebar() {
     return (
@@ -41,7 +42,7 @@ function Sidebar() {
                 {/* Top Section: Logo and Navigation (grows to fill available space) */}
                 <div className="flex-grow p-4">
                     <div className="mb-8 flex items-center gap-2">
-                        <FilePlus2 className="h-6 w-6"/>
+                        <img className="h-15" src={imgUrl} alt=""/>
                         <h1 className="text-xl font-bold">ATS Assist</h1>
                     </div>
                     <nav className="flex flex-col gap-2">
