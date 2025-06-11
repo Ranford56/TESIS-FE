@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
     Table,
     TableHeader,
@@ -15,78 +15,18 @@ import {
     CardDescription,
     CardContent,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import {Badge} from "@/components/ui/badge";
 import {
-    LayoutDashboard,
     FilePlus2,
-    Settings,
-    ArrowLeft,
+    ArrowLeft
 } from "lucide-react";
 import {InsuranceForm} from "@/components/InsuranceForm.tsx";
 import {getAllInsuranceCases} from "@/services/api.ts";
 import type {Caso} from "@/services/types.ts";
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
-import {ModeToggle} from "@/components/ModeToggle.tsx";
-import imgUrl from '/atsLogo.png'
+import Sidebar from "@/components/Sidebar.tsx";
 
-function Sidebar() {
-    return (
-        <aside className="hidden w-64 flex-col border-r bg-muted/40 md:flex">
-            {/* Use flex-col and h-full to enable pushing content to the bottom */}
-            <div className="flex h-full flex-col">
 
-                {/* Top Section: Logo and Navigation (grows to fill available space) */}
-                <div className="flex-grow p-4">
-                    <div className="mb-8 flex items-center gap-2">
-                        <img className="h-15" src={imgUrl} alt=""/>
-                        <h1 className="text-xl font-bold">ATS Assist</h1>
-                    </div>
-                    <nav className="flex flex-col gap-2">
-                        <Button variant="ghost" className="justify-start gap-2">
-                            <LayoutDashboard className="h-4 w-4"/>
-                            Dashboard
-                        </Button>
-                        <Button variant="secondary" className="justify-start gap-2">
-                            <FilePlus2 className="h-4 w-4"/>
-                            Casos de Siniestros
-                        </Button>
-                        <Button variant="ghost" className="justify-start gap-2">
-                            <Settings className="h-4 w-4"/>
-                            Configuración
-                        </Button>
-                    </nav>
-                </div>
-
-                {/* Bottom Section: User Info and Theme Toggle */}
-                <div className="mt-auto border-t p-4">
-                    <div className="mb-4">
-                        <p className="text-xs font-semibold text-muted-foreground mb-2">Tema</p>
-                        <ModeToggle/>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <Avatar className="h-9 w-9">
-                            {/* Add user's avatar image URL here */}
-                            <AvatarImage src="https://instagram.fgye4-1.fna.fbcdn.net/v/t51.2885-19/472248571_1135244071651124_7092175178623355615_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fgye4-1.fna.fbcdn.net&_nc_cat=108&_nc_oc=Q6cZ2QGi2bFqmlPCppzenQjdIX5ZM4UgJo7FpSdnJObgyzoKmDtDV14XSTba1OwlBk5YdnM&_nc_ohc=yyqwa9Cg-AgQ7kNvwEYuFpO&_nc_gid=SIzorMcK-Bn4Hh3KNzWiqA&edm=ALGbJPMBAAAA&ccb=7-5&oh=00_AfMV2TUATG7VAHoJnnkh8nywWFdanA-z1vQoCikhItFfiw&oe=684E61EF&_nc_sid=7d3ac5" alt="User Avatar"/>
-                            <AvatarFallback>LM</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col gap-1">
-                            <p className="text-sm font-medium leading-none">Lorem Ipsum</p>
-                            <p className="text-xs leading-none text-muted-foreground">
-                                lorem@ipsum.dev
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    );
-}
-
-function CasesDataTable({ onAddNewCase, rowData }: { onAddNewCase: () => void; rowData: Caso[] }) {
+function CasesDataTable({onAddNewCase, rowData}: { onAddNewCase: () => void; rowData: Caso[] }) {
     return (
         <Card>
             <CardHeader>
@@ -98,7 +38,7 @@ function CasesDataTable({ onAddNewCase, rowData }: { onAddNewCase: () => void; r
                         </CardDescription>
                     </div>
                     <Button onClick={onAddNewCase} className="gap-2">
-                        <FilePlus2 className="h-4 w-4" />
+                        <FilePlus2 className="h-4 w-4"/>
                         Reportar Nuevo Caso
                     </Button>
                 </div>
@@ -160,7 +100,7 @@ export default function InsurancePageWrapper() {
 
     return (
         <div className="flex h-screen w-full bg-background">
-            <Sidebar />
+            <Sidebar/>
             <main className="flex-1 overflow-y-auto p-6">
                 {view === "table" ? (
                     <CasesDataTable onAddNewCase={handleShowForm} rowData={cases}/>
@@ -171,14 +111,10 @@ export default function InsurancePageWrapper() {
                             onClick={handleShowTable}
                             className="mb-4 gap-2"
                         >
-                            <ArrowLeft className="h-4 w-4" />
+                            <ArrowLeft className="h-4 w-4"/>
                             Volver a la tabla
                         </Button>
-                        {/* Pass the `handleShowTable` function to your form.
-              Your form should call this function upon successful submission
-              to return to the table view.
-            */}
-                        <InsuranceForm onSubmissionSuccess={handleShowTable} />
+                        <InsuranceForm onSubmissionSuccess={handleShowTable}/>
                     </div>
                 )}
             </main>
