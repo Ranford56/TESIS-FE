@@ -46,7 +46,7 @@ interface ClientData {
   insuredName: string;
   policyNumber: string;
   insurerId: string;
-  residence: string;
+  // residence: string;
 }
 
 interface VehicleData {
@@ -87,15 +87,15 @@ const validationSchema = Yup.object().shape({
         .min(3, "Mínimo 3 caracteres")
         .required("Requerido"),
     insuredName: Yup.string()
-        .min(3, "Mínimo 3 caracteres")
+        .min(6, "Mínimo 6 caracteres")
         .required("Requerido"),
     policyNumber: Yup.string()
         .min(3, "Mínimo 3 caracteres")
         .required("Requerido"),
     insurerId: Yup.string().required("Requerido"), // Changed to string to match select value
-    residence: Yup.string()
-        .min(3, "Mínimo 3 caracteres")
-        .required("Requerido"),
+    // residence: Yup.string()
+    //     .min(3, "Mínimo 3 caracteres")
+    //     .required("Requerido"),
   }),
   vehicle: Yup.object().shape({
     plate: Yup.string().min(3, "Mínimo 3 caracteres").required("Requerido"),
@@ -127,6 +127,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
       []
   );
   const [vehicleBrands, setVehicleBrands] = useState<MarcaVehiculo[]>([]);
+  const [isOtherSelected, setIsOtherSelected] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch data for selects
@@ -159,7 +160,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
       insuredName: "",
       policyNumber: "",
       insurerId: "",
-      residence: "",
+      // residence: "",
     },
     vehicle: {
       plate: "",
@@ -228,7 +229,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
           {
             nombre_contratante: values.client.contractorName,
             numero_identificacion: values.client.identificationNumber,
-            residencia: values.client.residence,
+            // residencia: values.client.residence,
             tipo_identificacion: values.client.identificationType,
           },
         ],
@@ -244,7 +245,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
           {
             nombre_asegurado: values.client.insuredName, // Using insuredName here
             numero_identificacion: values.client.identificationNumber,
-            residencia: values.client.residence,
+            // residencia: values.client.residence,
             tipo_identificacion: values.client.identificationType,
           },
         ],
@@ -274,7 +275,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
 
   return (
       <div className="flex h-screen w-full bg-background">
-        <Sidebar/>
+        {/* <Sidebar/> */}
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-4xl mx-auto p-4 md:p-6">
             <Formik
@@ -295,7 +296,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                         insuredName: true,
                         policyNumber: true,
                         insurerId: true,
-                        residence: true,
+                        // residence: true,
                       },
                     });
                   } else if (step === 2) {
@@ -445,7 +446,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     htmlFor="client.insuredName"
                                     className="block text-sm font-medium"
                                 >
-                                  Nombre del Asegurado
+                                  Placa del Vehiculo
                                 </label>
                                 <Field
                                     as={Input}
@@ -512,7 +513,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 />
                               </div>
 
-                              <div className="md:col-span-2 space-y-2">
+                              {/* <div className="md:col-span-2 space-y-2">
                                 <label
                                     htmlFor="client.residence"
                                     className="block text-sm font-medium"
@@ -529,7 +530,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     component="div"
                                     className="text-sm text-destructive"
                                 />
-                              </div>
+                              </div> */}
                             </CardContent>
                             <CardFooter className="flex justify-end">
                               <Button type="button" onClick={validateAndGoNext}>
@@ -574,26 +575,42 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 >
                                   Marca
                                 </label>
-                                <Select
-                                    onValueChange={(value) =>
-                                        setFieldValue("vehicle.brandId", value)
-                                    }
-                                    value={values.vehicle.brandId}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Seleccione una marca"/>
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {vehicleBrands.map((brand) => (
-                                        <SelectItem
-                                            key={brand.id}
-                                            value={brand.id.toString()}
-                                        >
-                                          {brand.marca}
-                                        </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
+                            {isOtherSelected ? (
+                              <Input
+                                placeholder="Especifique la marca"
+                                value={values.vehicle.brandId}
+                                onChange={(e) => setFieldValue("vehicle.brandId", e.target.value)}
+                                onBlur={() => {
+                                  if (!values.vehicle.brandId) {
+                                    setIsOtherSelected(false);
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <Select
+                                onValueChange={(value) => {
+                                  if (value === "others") {
+                                    setIsOtherSelected(true);
+                                    setFieldValue("vehicle.brandId", "");
+                                  } else {
+                                    setFieldValue("vehicle.brandId", value);
+                                  }
+                                }}
+                                value={values.vehicle.brandId}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Seleccione una marca" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {vehicleBrands.map((brand) => (
+                                    <SelectItem key={brand.id} value={brand.id.toString()}>
+                                      {brand.marca}
+                                    </SelectItem>
+                                  ))}
+                                  <SelectItem value="others">Otros</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            )} 
                                 <ErrorMessage
                                     name="vehicle.brandId"
                                     component="div"
@@ -734,7 +751,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     htmlFor="alreadyReported"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 >
-                                  El siniestro ya fue reportado
+                                  Reportado a la compañìa de seguros
                                 </label>
                               </div>
                             </CardContent>
@@ -851,7 +868,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                       {step === 5 && (
                           <Card>
                             <CardHeader>
-                              <CardTitle className="text-xl">
+                              <CardTitle className="text-xl text-center">
                                 Solicitud Completada
                               </CardTitle>
                             </CardHeader>
@@ -873,7 +890,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 </svg>
                               </div>
                               <h3 className="mt-3 text-lg font-medium">
-                                ¡Caso de seguro registrado exitosamente!
+                                ¡Siniestro registrado exitosamente!
                               </h3>
                               <p className="mt-2 text-sm text-muted-foreground">
                                 Hemos recibido tu solicitud. Nos pondremos en contacto

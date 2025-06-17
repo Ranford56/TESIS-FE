@@ -37,10 +37,10 @@ function CasesDataTable({onAddNewCase, rowData}: { onAddNewCase: () => void; row
                             Administra y revisa los casos de siniestros reportados.
                         </CardDescription>
                     </div>
-                    <Button onClick={onAddNewCase} className="gap-2">
+                    {/* <Button onClick={onAddNewCase} className="gap-2">
                         <FilePlus2 className="h-4 w-4"/>
                         Reportar Nuevo Caso
-                    </Button>
+                    </Button> */}
                 </div>
             </CardHeader>
             <CardContent>

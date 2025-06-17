@@ -2,7 +2,7 @@ export interface Contratantes {
     tipo_identificacion:   string;
     numero_identificacion: string;
     nombre_contratante:    string;
-    residencia:            string;
+    // residencia:            string;
     id:                    number;
 }
 
@@ -31,14 +31,14 @@ interface ContratanteBase {
     tipo_identificacion: string;
     numero_identificacion: string;
     nombre_contratante: string;
-    residencia: string;
+    // residencia: string;
 }
 
 interface AseguradoBase {
     tipo_identificacion: string;
     numero_identificacion: string;
     nombre_asegurado: string;
-    residencia: string;
+    // residencia: string;
 }
 
 interface VehiculoBase {
@@ -71,7 +71,7 @@ export interface Asegurado {
     tipo_identificacion:   string;
     numero_identificacion: string;
     nombre_asegurado?:     string;
-    residencia:            string;
+    // residencia:            string;
     id:                    number;
     nombre_contratante?:   string;
 }

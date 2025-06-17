@@ -21,23 +21,23 @@ function Sidebar() {
         <aside className="hidden w-64 flex-col border-r bg-muted/40 md:flex">
             <div className="flex h-full flex-col">
                 <div className="flex-grow p-4">
-                    <div className="mb-8 flex items-center gap-2">
+                    <div className="mb-8 flex items-center gap-2 flex-col">
                         <img className="h-15" src={imgUrl} alt=""/>
                         <h1 className="text-xl font-bold">ATS Assist</h1>
                     </div>
                     <nav className="flex flex-col gap-2">
-                        <Button variant="ghost" className="justify-start gap-2">
+                        <Button variant="secondary" className="justify-start gap-2">
                             <LayoutDashboard className="h-4 w-4"/>
                             Dashboard
                         </Button>
-                        <Button variant="secondary" className="justify-start gap-2">
+                        {/* <Button variant="secondary" className="justify-start gap-2">
                             <FilePlus2 className="h-4 w-4"/>
                             Casos de Siniestros
                         </Button>
                         <Button variant="ghost" className="justify-start gap-2">
                             <Settings className="h-4 w-4"/>
                             Configuración
-                        </Button>
+                        </Button> */}
                     </nav>
                 </div>
 
