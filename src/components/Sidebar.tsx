@@ -1,8 +1,6 @@
 import {useMsal} from "@azure/msal-react";
 import {
     LayoutDashboard,
-    FilePlus2,
-    Settings,
     LogOut
 } from "lucide-react";
 import {

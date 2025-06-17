@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {
-    FilePlus2,
     ArrowLeft
 } from "lucide-react";
 import {InsuranceForm} from "@/components/InsuranceForm.tsx";
@@ -26,7 +25,7 @@ import type {Caso} from "@/services/types.ts";
 import Sidebar from "@/components/Sidebar.tsx";
 
 
-function CasesDataTable({onAddNewCase, rowData}: { onAddNewCase: () => void; rowData: Caso[] }) {
+function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }) {
     return (
         <Card>
             <CardHeader>

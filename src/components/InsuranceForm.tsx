@@ -36,7 +36,6 @@ import {
 import { toast } from "sonner";
 import type { Contratantes, CreateCaso, MarcaVehiculo } from "@/services/types";
 import { dateToDateFormat } from "@/services/helpers";
-import Sidebar from "@/components/Sidebar.tsx";
 
 // Types
 interface ClientData {
