@@ -37,7 +37,7 @@ import { toast } from "sonner";
 import type { Contratantes, CreateCaso, MarcaVehiculo } from "@/services/types";
 import { dateToDateFormat } from "@/services/helpers";
 import { es } from "date-fns/locale";
-import {LogOut, UserCheck} from "lucide-react";
+import {LogOut} from "lucide-react";
 import {useMsal} from "@azure/msal-react";
 
 // Types
@@ -48,7 +48,7 @@ interface ClientData {
   insuredName: string;
   policyNumber: string;
   insurerId: string;
-  // residence: string;
+  residence: string;
 }
 
 interface VehicleData {
@@ -94,9 +94,9 @@ const validationSchema = Yup.object().shape({
     policyNumber: Yup.string()
         .min(3, "Mínimo 3 caracteres"),
     insurerId: Yup.string().required("Requerido"), // Changed to string to match select value
-    // residence: Yup.string()
-    //     .min(3, "Mínimo 3 caracteres")
-    //     .required("Requerido"),
+    residence: Yup.string()
+        .min(3, "Mínimo 3 caracteres")
+        .required("Requerido"),
   }),
   vehicle: Yup.object().shape({
     plate: Yup.string().min(6, "Mínimo 6 caracteres").required("Requerido"),
@@ -161,7 +161,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
       insuredName: "",
       policyNumber: "",
       insurerId: "",
-      // residence: "",
+      residence: "",
     },
     vehicle: {
       plate: "",
@@ -230,7 +230,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
           {
             nombre_contratante: values.client.contractorName,
             numero_identificacion: values.client.identificationNumber,
-            // residencia: values.client.residence,
+            residencia: values.client.residence,
             tipo_identificacion: values.client.identificationType,
           },
         ],
@@ -246,7 +246,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
           {
             nombre_asegurado: values.client.insuredName, // Using insuredName here
             numero_identificacion: values.client.identificationNumber,
-            // residencia: values.client.residence,
+            residencia: values.client.residence,
             tipo_identificacion: values.client.identificationType,
           },
         ],
@@ -299,7 +299,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                         insuredName: true,
                         policyNumber: true,
                         insurerId: true,
-                        // residence: true,
+                        residence: true,
                       },
                     });
                   } else if (step === 2) {
@@ -458,7 +458,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     placeholder="Ej: Juan Perez"
                                     className="pr-8" // Space for the button
                                 />
-                                <Button
+                                {/*<Button
                                     type="button"
                                     variant={values.client.insuredName == values.client.contractorName && values.client.insuredName !== "" && values.client.contractorName !== "" ? "secondary" : "outline"}
                                     onClick={()=>{
@@ -466,7 +466,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     }}
                                 >
                                   <UserCheck/>
-                                </Button>
+                                </Button>*/}
                                   </div>
 
                                 <ErrorMessage
@@ -529,7 +529,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 />
                               </div>
 
-                              {/* <div className="md:col-span-2 space-y-2">
+                              <div className="md:col-span-2 space-y-2">
                                 <label
                                     htmlFor="client.residence"
                                     className="block text-sm font-medium"
@@ -546,7 +546,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                     component="div"
                                     className="text-sm text-destructive"
                                 />
-                              </div> */}
+                              </div>
                             </CardContent>
                             <CardFooter className="flex justify-end">
                               <Button type="button" onClick={validateAndGoNext}>
@@ -881,7 +881,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                       )}
 
                       {/* Step 5: Success */}
-                      {step === 1 && (
+                      {step === 5 && (
                           <Card>
                             <CardHeader>
                               <CardTitle className="text-xl text-center">
