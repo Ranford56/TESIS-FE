@@ -1,8 +1,7 @@
 import axios from 'axios';
 import type {BlobResponse, Caso, Contratantes, CreateCaso, MarcaVehiculo} from './types';
 
-// const API_BASE_URL = 'https://pry-tesis-be.azurewebsites.net';
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://pry-tesis-be.azurewebsites.net';
 
 export const createInsuranceCase = async (formData: CreateCaso) => {
   try {
