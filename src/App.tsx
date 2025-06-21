@@ -101,7 +101,7 @@ function App() {
                         <div className="w-full max-w-4xl mx-auto text-center">
 
                             <div className="bg-gray-800 p-10 rounded-xl shadow-2xl">
-                                <h1 className="text-4xl font-extrabold mb-4">Bienvenido al Portal de Seguros</h1>
+                                <h1 className="text-4xl font-extrabold mb-4">Reporta tu siniestro</h1>
                                 <p className="text-gray-400 mb-8 text-lg">Por favor, inicia sesión con tu cuenta de
                                     Microsoft
                                     para
