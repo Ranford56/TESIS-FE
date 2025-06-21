@@ -49,7 +49,7 @@ function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }
                             <TableHead>ID del Caso</TableHead>
                             <TableHead>Aseguradora</TableHead>
                             <TableHead>Fecha de Creación</TableHead>
-                            <TableHead>Nombre del Asegurado</TableHead>
+                            <TableHead>Placa</TableHead>
                             <TableHead>Estado</TableHead>
                         </TableRow>
                     </TableHeader>

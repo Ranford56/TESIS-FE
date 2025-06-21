@@ -36,6 +36,9 @@ import {
 import { toast } from "sonner";
 import type { Contratantes, CreateCaso, MarcaVehiculo } from "@/services/types";
 import { dateToDateFormat } from "@/services/helpers";
+import { es } from "date-fns/locale";
+import {LogOut, UserCheck} from "lucide-react";
+import {useMsal} from "@azure/msal-react";
 
 // Types
 interface ClientData {
@@ -86,18 +89,17 @@ const validationSchema = Yup.object().shape({
         .min(3, "Mínimo 3 caracteres")
         .required("Requerido"),
     insuredName: Yup.string()
-        .min(6, "Mínimo 6 caracteres")
-        .required("Requerido"),
-    policyNumber: Yup.string()
         .min(3, "Mínimo 3 caracteres")
         .required("Requerido"),
+    policyNumber: Yup.string()
+        .min(3, "Mínimo 3 caracteres"),
     insurerId: Yup.string().required("Requerido"), // Changed to string to match select value
     // residence: Yup.string()
     //     .min(3, "Mínimo 3 caracteres")
     //     .required("Requerido"),
   }),
   vehicle: Yup.object().shape({
-    plate: Yup.string().min(3, "Mínimo 3 caracteres").required("Requerido"),
+    plate: Yup.string().min(6, "Mínimo 6 caracteres").required("Requerido"),
     brandId: Yup.string().required("Requerido"), // Changed to string to match select value
     year: Yup.string()
         .matches(/^\d{4}$/, "Año inválido")
@@ -272,6 +274,8 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
+  const { instance } = useMsal();
+
   return (
       <div className="flex h-screen w-full bg-background">
         {/* <Sidebar/> */}
@@ -282,7 +286,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
             >
-              {({values, setFieldValue, validateForm, setTouched}) => {
+              {({values, setFieldValue, validateForm, setTouched, resetForm}) => {
                 // This function validates the current step before proceeding
                 const validateAndGoNext = async () => {
                   // Mark all fields in the current step as touched to trigger validation errors
@@ -440,18 +444,31 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 />
                               </div>
 
-                              <div className="space-y-2">
+                                <div className="space-y-2">
                                 <label
                                     htmlFor="client.insuredName"
                                     className="block text-sm font-medium"
                                 >
-                                  Placa del Vehiculo
+                                  Nombre del Asegurado
                                 </label>
-                                <Field
+                                  <div className="flex w-full max-w-sm items-center gap-2">
+                                  <Field
                                     as={Input}
                                     name="client.insuredName"
-                                    placeholder="Ej: María Gómez"
+                                    placeholder="Ej: Juan Perez"
+                                    className="pr-8" // Space for the button
                                 />
+                                <Button
+                                    type="button"
+                                    variant={values.client.insuredName == values.client.contractorName && values.client.insuredName !== "" && values.client.contractorName !== "" ? "secondary" : "outline"}
+                                    onClick={()=>{
+                                      setFieldValue("client.insuredName", values.client.contractorName)
+                                    }}
+                                >
+                                  <UserCheck/>
+                                </Button>
+                                  </div>
+
                                 <ErrorMessage
                                     name="client.insuredName"
                                     component="div"
@@ -673,7 +690,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                         )}
                                     >
                                       {values.incident.date ? (
-                                          format(values.incident.date, "PPP")
+                                          format(values.incident.date, "PPP", { locale: es })
                                       ) : (
                                           <span>Seleccione una fecha</span>
                                       )}
@@ -864,7 +881,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                       )}
 
                       {/* Step 5: Success */}
-                      {step === 5 && (
+                      {step === 1 && (
                           <Card>
                             <CardHeader>
                               <CardTitle className="text-xl text-center">
@@ -896,16 +913,27 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 contigo pronto.
                               </p>
                             </CardContent>
-                            <CardFooter className="flex justify-center">
+                            <CardFooter className="flex justify-center gap-2">
                               <Button
                                   type="button"
                                   onClick={() => {
                                     // This should ideally reset the form as well
                                     // For now, it just resets the step
+                                    resetForm()
                                     setStep(1);
                                   }}
                               >
                                 Crear Nuevo Caso
+                              </Button>
+                              <Button
+                                  variant="ghost"
+                                  className="gap-2 text-red-500 hover:text-red-700 hover:bg-red-100 "
+                                  onClick={() => {
+                                    instance.logoutRedirect({postLogoutRedirectUri: "/"}).then( r => console.log(r))
+                                  }}
+                              >
+                                <LogOut className="h-4 w-4"/>
+                                Cerrar Sesión
                               </Button>
                             </CardFooter>
                           </Card>
