@@ -49,7 +49,7 @@ function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }
                             <TableHead>ID del Caso</TableHead>
                             <TableHead>Aseguradora</TableHead>
                             <TableHead>Fecha de Creación</TableHead>
-                            <TableHead>Placa</TableHead>
+                            <TableHead>Nombre del Asegurado</TableHead>
                             <TableHead>Estado</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -59,7 +59,7 @@ function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }
                                 <TableCell className="font-medium">{caseItem.id}</TableCell>
                                 <TableCell>{caseItem.aseguradora}</TableCell>
                                 <TableCell>{caseItem.fecha_incidente.toString()}</TableCell>
-                                <TableCell>{caseItem.vehiculos[0] == undefined ? "N/A" : caseItem.vehiculos[0].placa}</TableCell>
+                                <TableCell>{caseItem.asegurados[0] == undefined ? "N/A" : caseItem.asegurados[0].nombre_asegurado}</TableCell>
                                 <TableCell>
                                     <Badge
                                         variant={
