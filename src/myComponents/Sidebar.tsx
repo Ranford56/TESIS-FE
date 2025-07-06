@@ -8,7 +8,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import {ModeToggle} from "@/components/ModeToggle.tsx";
+import {ModeToggle} from "@/myComponents/ModeToggle";
 import imgUrl from '/atsLogo.png'
 import {Button} from "@/components/ui/button.tsx";
 

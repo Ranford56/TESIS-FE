@@ -238,7 +238,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
           {
             anio: values.vehicle.year,
             marca: values.vehicle.brandId,
-            modelo: values.vehicle.brandId, // Assuming model is same as brandId for this case
+            modelo: values.vehicle.brandId,
             placa: values.vehicle.plate,
           },
         ],
@@ -917,8 +917,6 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                               <Button
                                   type="button"
                                   onClick={() => {
-                                    // This should ideally reset the form as well
-                                    // For now, it just resets the step
                                     resetForm()
                                     setStep(1);
                                   }}

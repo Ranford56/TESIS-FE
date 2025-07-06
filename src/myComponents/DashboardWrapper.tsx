@@ -19,10 +19,10 @@ import {Badge} from "@/components/ui/badge";
 import {
     ArrowLeft
 } from "lucide-react";
-import {InsuranceForm} from "@/components/InsuranceForm.tsx";
-import {getAllInsuranceCases} from "@/services/api.ts";
+import {InsuranceForm} from "@/myComponents/InsuranceForm";
 import type {Caso} from "@/services/types.ts";
-import Sidebar from "@/components/Sidebar.tsx";
+import Sidebar from "@/myComponents/Sidebar";
+import { getAllInsuranceCases } from "@/services/api.ts"
 
 
 function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }) {
