@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {
-    ArrowLeft
+    ArrowLeft,
+    FilePlus2
 } from "lucide-react";
 import {InsuranceForm} from "@/myComponents/InsuranceForm";
 import type {Caso} from "@/services/types.ts";
@@ -25,7 +26,7 @@ import Sidebar from "@/myComponents/Sidebar";
 import { getAllInsuranceCases } from "@/services/api.ts"
 
 
-function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }) {
+function CasesDataTable({ onAddNewCase, rowData }: { onAddNewCase: () => void; rowData: Caso[] }) {
     return (
         <Card>
             <CardHeader>
@@ -36,10 +37,10 @@ function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }
                             Administra y revisa los casos de siniestros reportados.
                         </CardDescription>
                     </div>
-                    {/* <Button onClick={onAddNewCase} className="gap-2">
+                    <Button onClick={onAddNewCase} className="gap-2">
                         <FilePlus2 className="h-4 w-4"/>
                         Reportar Nuevo Caso
-                    </Button> */}
+                    </Button>
                 </div>
             </CardHeader>
             <CardContent>
@@ -57,7 +58,7 @@ function CasesDataTable({rowData}: { onAddNewCase: () => void; rowData: Caso[] }
                         {rowData.map((caseItem) => (
                             <TableRow key={caseItem.id}>
                                 <TableCell className="font-medium">{caseItem.id}</TableCell>
-                                <TableCell>{caseItem.aseguradora}</TableCell>
+                                <TableCell>{caseItem.aseguradores[0].nombre ?? "N/A"}</TableCell>
                                 <TableCell>{caseItem.fecha_incidente.toString()}</TableCell>
                                 <TableCell>{caseItem.asegurados[0] == undefined ? "N/A" : caseItem.asegurados[0].nombre_asegurado}</TableCell>
                                 <TableCell>

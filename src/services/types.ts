@@ -20,11 +20,15 @@ export interface CreateCaso {
     danos_visibles:     string;
     ya_reportado:       boolean;
     numero_poliza:      string;
-    aseguradora:        string;
     contratantes:       ContratanteBase[];
     asegurados:         AseguradoBase[];
     vehiculos:          VehiculoBase[];
+    aseguradores:       AseguradoresBase[];
     // documentos:         DocumentoBase[];
+}
+
+interface AseguradoresBase {
+    id: string;
 }
 
 interface ContratanteBase {
@@ -65,6 +69,12 @@ export interface Caso {
     asegurados:         Asegurado[];
     vehiculos:          Vehiculo[];
     documentos:         Documento[];
+    aseguradores:       Aseguradores[];
+}
+
+export interface Aseguradores {
+    id:          number;
+    nombre:     string;
 }
 
 export interface Asegurado {

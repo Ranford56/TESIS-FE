@@ -1,7 +1,7 @@
 import axios from 'axios';
-import type {BlobResponse, Caso, Contratantes, CreateCaso, MarcaVehiculo} from './types';
+import type {Aseguradores, BlobResponse, Caso, CreateCaso, MarcaVehiculo} from './types';
 
-const API_BASE_URL = 'https://pry-tesis-be.azurewebsites.net';
+const API_BASE_URL = 'https://nohe-function-app.azurewebsites.net';
 
 export const createInsuranceCase = async (formData: CreateCaso) => {
   try {
@@ -37,9 +37,9 @@ export const getInsuranceCase = async (caseId: number) => {
   }
 };
 
-export const getInsuranceCompanies = async (): Promise<Contratantes[]> => {
+export const getInsuranceCompanies = async (): Promise<Aseguradores[]> => {
   try{
-    const response = await axios.get(`${API_BASE_URL}/contratantes/`)
+    const response = await axios.get(`${API_BASE_URL}/aseguradores/`)
     return response.data
   } catch (error) {
     console.error('Error fetching info: ', error)

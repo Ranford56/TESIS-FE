@@ -34,7 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import type { Contratantes, CreateCaso, MarcaVehiculo } from "@/services/types";
+import type { Aseguradores, CreateCaso, MarcaVehiculo } from "@/services/types";
 import { dateToDateFormat } from "@/services/helpers";
 import { es } from "date-fns/locale";
 import {LogOut} from "lucide-react";
@@ -64,6 +64,10 @@ interface IncidentData {
   alreadyReported: boolean;
 }
 
+interface AseguradoresData {
+  id: string;
+}
+
 interface DocumentFiles {
   idFile: File | null;
   registrationFile: File | null;
@@ -71,6 +75,7 @@ interface DocumentFiles {
 }
 
 interface FormData {
+  aseguradores: AseguradoresData;
   client: ClientData;
   vehicle: VehicleData;
   incident: IncidentData;
@@ -79,6 +84,9 @@ interface FormData {
 
 // Form validation schema
 const validationSchema = Yup.object().shape({
+  aseguradores: Yup.object().shape({
+    id: Yup.string().required("Requerido")
+  }),
   client: Yup.object().shape({
     identificationType: Yup.string().required("Requerido"),
     identificationNumber: Yup.string()
@@ -93,7 +101,6 @@ const validationSchema = Yup.object().shape({
         .required("Requerido"),
     policyNumber: Yup.string()
         .min(3, "Mínimo 3 caracteres"),
-    insurerId: Yup.string().required("Requerido"), // Changed to string to match select value
     residence: Yup.string()
         .min(3, "Mínimo 3 caracteres")
         .required("Requerido"),
@@ -124,7 +131,7 @@ const validationSchema = Yup.object().shape({
 
 export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () => void }) {
   const [step, setStep] = useState(1);
-  const [insuranceCompanies, setInsuranceCompanies] = useState<Contratantes[]>(
+  const [insuranceCompanies, setInsuranceCompanies] = useState<Aseguradores[]>(
       []
   );
   const [vehicleBrands, setVehicleBrands] = useState<MarcaVehiculo[]>([]);
@@ -154,6 +161,9 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
   }, []);
 
   const initialValues: FormData = {
+    aseguradores: {
+      id: "",
+    },
     client: {
       identificationType: "Cedula",
       identificationNumber: "",
@@ -225,7 +235,6 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
         danos_visibles: values.incident.visibleDamage,
         ya_reportado: values.incident.alreadyReported,
         numero_poliza: values.client.policyNumber,
-        aseguradora: values.client.contractorName,
         contratantes: [
           {
             nombre_contratante: values.client.contractorName,
@@ -250,6 +259,11 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
             tipo_identificacion: values.client.identificationType,
           },
         ],
+        aseguradores: [
+          {
+            id: values.aseguradores.id
+          }
+        ]
       };
 
       const createInsuranceResponse = await createInsuranceCase(data);
@@ -504,9 +518,9 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 </label>
                                 <Select
                                     onValueChange={(value) =>
-                                        setFieldValue("client.insurerId", value)
+                                        setFieldValue("aseguradores.id", value)
                                     }
-                                    value={values.client.insurerId}
+                                    value={values.aseguradores.id.toString()}
                                 >
                                   <SelectTrigger>
                                     <SelectValue placeholder="Seleccione una aseguradora"/>
@@ -517,7 +531,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                             key={company.id}
                                             value={company.id.toString()}
                                         >
-                                          {company.nombre_contratante}
+                                          {company.nombre}
                                         </SelectItem>
                                     ))}
                                   </SelectContent>
@@ -619,7 +633,7 @@ export function InsuranceForm({onSubmissionSuccess}: { onSubmissionSuccess: () =
                                 </SelectTrigger>
                                 <SelectContent>
                                   {vehicleBrands.map((brand) => (
-                                    <SelectItem key={brand.id} value={brand.id.toString()}>
+                                    <SelectItem key={brand.id} value={brand.marca.toString()}>
                                       {brand.marca}
                                     </SelectItem>
                                   ))}
